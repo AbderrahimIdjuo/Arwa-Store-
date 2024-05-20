@@ -1,0 +1,57 @@
+<%- include("partials/header.ejs") %>
+
+<div class="container pt-5 ">
+  <form action="/listeCommandes" method="POST">
+    <div class="input-group col-4 mb-3 px-5">
+      <input type="search" name="search" class="form-control" placeholder="Search..." aria-label="Search">
+      <button class="btn btn-outline-secondary" type="submit" id="button-addon2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+        </svg>
+      </button>
+    </div>
+  </form>
+</div>
+
+
+<div class="container py-5">
+<table class="table table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Client</th>
+        <th scope="col">Nbr d'articles</th>
+        <th scope="col">Montant</th>
+        <th scope="col">Avance</th>
+        <th scope="col">Livraison</th>
+        <th scope="col">rest à payée</th>
+        <th scope="col">Discription</th>
+        <th scope="col">Tracking Nbr</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% if(locals.commandes){ %>
+      <% for(let i=0 ; i<commandes.length ; i++){ %>
+        <tr>
+          <th scope="row"><%=i+1%></th>
+          <td><%=commandes[i].client %></td>
+          <td><%=commandes[i].nbrArticls %></td>
+          <td><%=commandes[i].montant %></td>
+          <td><%=commandes[i].avance %></td>
+          <td><%=commandes[i].livraison %></td>
+          <td><%=commandes[i].rest %></td>
+          <td><%=commandes[i].discription %></td>
+          <td><%=commandes[i].trakingNbr %></td>
+          <td><%=commandes[i].date %></td>
+        </tr>
+      <% } %>  
+      <% } %> 
+
+    </tbody>
+  </table>    
+</div>
+
+
+
+<%- include("partials/footer.ejs") %>

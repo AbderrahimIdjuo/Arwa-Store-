@@ -1,0 +1,40 @@
+<%- include("partials/header.ejs") %>
+
+<div class="container d-flex px-3 justify-content-evenly gap-2  mt-4  text-left">
+  <div class="flex-shrink-1 py-5 my-5">    
+    <h1 class="display-3 fw-bold indigo-color">CLIENTS</h1>
+    <h3 class="fw-normal text-muted mb-3">Gérer vous clients</h3>
+    <a href="/ajouterClients"><button class="btn btn-outline-dark my-1">Ajouter un client</button></a>
+    <a href="/listeClients"><button class="btn btn-outline-dark my-1">Listes des clients</button></a>
+    
+</div>
+<div class="flex-shrink-1">    
+      <img src="/Images/clients.jpg" height="400px" width="400px" alt="">
+  </div>
+</div>
+
+<div class="container d-flex justify-content-evenly gap-2 px-3  mt-4  text-left">
+    <div class="flex-shrink-1 py-5 my-5">    
+      <h1 class="display-3 fw-bold indigo-color">COMMANDES</h1>
+      <h3 class="fw-normal text-muted mb-3">Gérer vous commandes</h3>
+      <a href="/ajouterCommande"><button class="btn btn-outline-dark my-1">Ajouter une commandes</button></a>
+      <a href="/listeCommandes"><button class="btn btn-outline-dark my-1">Listes des commandes</button></a>
+    </div>
+    <div class="flex-shrink-1 ">    
+      <img src="/Images/commandes.jpg" height="400px" width="400px" alt="">
+    </div>
+  </div>
+
+  <div class="container d-flex justify-content-evenly gap-2 px-3  mt-4  text-left">
+    <div class="flex-shrink-1 py-5 my-5">    
+      <h1 class="display-3 fw-bold indigo-color">COMPTABILITÉ</h1>
+      <h3 class="fw-normal text-muted mb-3">Gérer votre comptabilité</h3>
+      <a href="/reglerCompta"><button class="btn btn-outline-dark my-1">Régler ma comptabilité</button></a>
+      <a href="/fiche-compta"><button class="btn btn-outline-dark my-1">Fiche comptable</button></a>
+  </div>
+  <div class="flex-shrink-1">    
+        <img src="/Images/compta.jpg" height="400px" width="400px" alt="">
+    </div>
+  </div>
+
+<%- include("partials/footer.ejs") %>

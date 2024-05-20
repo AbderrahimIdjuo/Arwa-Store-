@@ -1,0 +1,53 @@
+<%- include("partials/header.ejs") %>
+<div class="container py-5" >
+<form class="row g-3" action="/ajouterClients" method="POST">
+  <div class="col-md-4">
+    <label for="first-name" class="form-label">First name</label>
+    <input type="text" class="form-control" id="first-name" name="fName" required>
+  </div>
+  <div class="col-md-4">
+    <label for="last-name" class="form-label">Last name</label>
+    <input type="text" class="form-control" id="last-name" name="lName" required>
+  </div>
+  <div class="col-md-4">
+    <label for="phone" class="form-label">Phone</label>
+    <div class="input-group">
+      <input type="text" class="form-control" id="phone" name="phone" required>
+    </div>
+  </div>
+  <% if (locals.city) { %>
+  <div class="col-md-3">
+    <label for="validationDefault04" class="form-label">City</label>
+    <select class="form-select" id="validationDefault04" name="city" required>
+      <option selected disabled value="">Choose...</option>
+      <% city.cities.forEach(element => { %>
+        <option> <%=element.name%></option>
+        <% }); %>
+    </select>
+  </div>
+  <% } %>
+  <div class="col-md-6">
+    <label for="validationDefault03" class="form-label">Adresse</label>
+    <input type="text" class="form-control" id="validationDefault03" name="adress" required>
+  </div>
+  <div class="col-md-3">
+    <label for="validationDefault04" class="form-label">Platforme</label>
+    <select class="form-select" id="validationDefault04" name="platforme" required>
+      <option selected disabled value="">Choose...</option>
+      <option>TikTok</option>
+      <option>Instagram</option>
+      <option>Facebook</option>
+      <option>Facebook Ads</option>
+    </select>
+  </div>  
+<div class="col-12">
+    <button class="btn btn-success" type="submit">Ajouter le client</button>
+  </div>
+</form>
+</div>
+
+
+
+
+
+<%- include("partials/footer.ejs") %>

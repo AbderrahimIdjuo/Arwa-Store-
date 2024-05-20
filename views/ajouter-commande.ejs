@@ -1,0 +1,50 @@
+<%- include("partials/header.ejs") %>
+<div class="container py-5" >
+<form class="row g-3" action="/ajouterCommande" method="POST">
+  <% if (locals.clients) { %>
+    <div class="col-md-3">
+      <label for="validationDefault04" class="form-label">Client</label>
+      <select class="form-select" id="validationDefault04" name="client" required>
+        <option selected disabled value="">Choose...</option>
+        <% clients.forEach(element => { %>
+          <option> <%=element.fname+" "+element.lname%></option>
+          <% }); %>
+      </select>
+    </div>
+    <% } %>
+  <div class="col-md-3">
+    <label for="number-articls" class="form-label">Nombre d'articls</label>
+    <input type="number" class="form-control" id="number-articls" name="numberArticls" required>
+  </div>
+  <div class="col-3">
+    <label for="montant" class="form-label">Montant</label>
+    <input type="number" class="form-control" id="montant" name="montant" required>
+  </div> 
+  <div class="col-md-3">
+    <label for="avance" class="form-label">Avance</label>
+    <input type="number" class="form-control" id="avance" name="avance" required>
+  </div>
+  <div class="col-md-2">
+    <label for="Frais de livraison" class="form-label">Frais de livraison</label>
+    <input type="number" class="form-control" id="Frais de livraison" name="Frais de livraison">
+  </div>
+  <div class="col-md-4">
+    <label for="tracking number" class="form-label">Tracking number</label>
+    <input type="text" class="form-control" id="tracking number" name="tracking number">
+  </div>
+  <div class="col-md-6">
+    <label for="discription" class="form-label">Discription</label>
+    <input type="text" class="form-control" id="discription" name="discription" >
+  </div>
+
+<div class="col-12">
+    <button class="btn btn-success" type="submit">Ajouter la commande</button>
+  </div>
+</form>
+</div>
+
+
+
+
+
+<%- include("partials/footer.ejs") %>

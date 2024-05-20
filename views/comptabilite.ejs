@@ -1,0 +1,76 @@
+<%- include("partials/header.ejs") %>
+
+<div class="container py-5" >
+  <form class="row g-3" action="/reglerCompta" method="POST">
+    <div class="col-md-3">
+    <label for="Barid Bank" class="form-label">Barid Bank</label>
+      <div class="input-group mb-3 ">
+      <input type="number" class="form-control" id="Barid Bank" name="Barid Bank"  min="0" required>
+      <span class="input-group-text" id="basic-addon2">DH</span>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <label for="CIH Bank" class="form-label">CIH Bank</label>
+      <div class="input-group mb-3 ">
+        <input type="number" class="form-control" id="CIH Bank" name="CIH Bank"  min="0" required>
+        <span class="input-group-text" id="basic-addon2">DH</span>
+      </div> 
+    </div>
+
+    <div class="col-md-3">
+      <label for="Chaabi Bank" class="form-label">Chaabi Bank</label>
+      <div class="input-group mb-3 ">
+        <input type="number" class="form-control" id="Chaabi Bank" name="Chaabi Bank"  min="0" required>
+        <span class="input-group-text" id="basic-addon2">DH</span>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <label for="Cash" class="form-label">Cash</label>
+      <div class="input-group mb-3 ">
+        <input type="number" class="form-control" id="Cash"  min="0" name="Cash" required>
+        <span class="input-group-text" id="basic-addon2">DH</span>
+      </div>  
+    </div>
+
+    <div class="col-md-3">
+      <label for="Fournisseur" class="form-label">Fournisseur</label>
+      <div class="input-group mb-3 ">
+      <input type="number" class="form-control" id="Fournisseur" name="Fournisseur"  min="0"  required>
+      <span class="input-group-text" id="basic-addon2">DH</span>
+    </div> 
+    </div>
+
+    <div class="col-md-3">
+      <label for="Cash BEYOU" class="form-label">Cash BEYOU</label>
+      <div class="input-group mb-3 ">
+      <input type="number" class="form-control" id="Cash BEYOU" name="Cash BEYOU"  min="0" required>
+      <span class="input-group-text" id="basic-addon2">DH</span>
+    </div> 
+    </div>
+
+    <div class="col-md-3">
+      <label for="Commandes impayées" class="form-label">Commandes impayées</label>
+      <div class="input-group mb-3 ">
+      <input type="number" class="form-control" id="Commandes impayées" name="Commandes impayées"  min="0" required>
+      <span class="input-group-text" id="basic-addon2">DH</span>
+    </div> 
+    </div>
+
+    <div class="col-md-3">
+      <label for="Commandes en cours de livraison" class="form-label">Commandes en cours de livraison</label>
+      <div class="input-group mb-3 ">
+      <input type="number" class="form-control" id="Commandes en cours de livraison" name="Commandes en cours de livraison"  min="0" required>
+      <span class="input-group-text" id="basic-addon2">DH</span>
+    </div> 
+    </div>
+
+  
+  <div class="col-8">
+      <button class="btn btn-success" type="submit">Submit</button>
+    </div>
+  </form>
+  </div>
+
+<%- include("partials/footer.ejs") %>

@@ -1,0 +1,66 @@
+
+/* Button styling */
+.wrapper{
+    transform: translate(-50%, -50%);
+  }
+
+.indigo-color{
+  color:rgb(113, 46, 213)
+}
+.bg-indigo-color{
+  background-color:rgb(113, 46, 213);
+}
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+
+.hide{
+  display: none;
+}
+.button{
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    font-size: 18px;
+    font-family: sans-serif;
+    text-decoration: none;
+    color: #333;
+    border: 2px solid #333;
+    letter-spacing: 2px;
+    text-align: center;
+    transition: all .35s;
+    padding-left: 10px;
+    padding-right: 10px; 
+  }
+  
+.button span{
+    position: relative;
+    z-index: 2;
+  }
+  
+.button:after{
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: #202020;
+    transition: all .35s;
+  }
+  
+  .button:hover{
+    color: #fff;
+  }
+  
+.button:hover:after{
+    width: 100%;
+  }
+
+  /* Div with a img in the background */ 
+  .background-image {
+    height: 400px; /* Set height as per your requirement */
+    background-color: aliceblue; 
+    display: flex;
+  }

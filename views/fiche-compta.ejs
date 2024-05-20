@@ -1,0 +1,57 @@
+<%- include("partials/header.ejs") %>
+
+<div class="container py-5">
+<table class="table table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">date</th>
+        <th scope="col">Barid Bank</th>
+        <th scope="col">CIH Bank</th>
+        <th scope="col">Chaabi Bank</th>
+        <th scope="col">Cash</th>
+        <th scope="col">Cash BEYOU</th>
+        <th scope="col">Fournisseur</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% if(locals.fichCompta){ %>
+        <tr>
+          <th scope="row"><%=fichCompta.date %></th>
+          <td><%=fichCompta.baridBank %></td>
+          <td><%=fichCompta.cihBank %></td>
+          <td><%=fichCompta.chaabiBank %></td>
+          <td><%=fichCompta.cash %></td>
+          <td><%=fichCompta.cashBeyou %></td>
+          <td><%=fichCompta.fournisseur %></td>
+        </tr>
+    <% } %>  
+    </tbody>
+
+  </table> 
+  <table class="table table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col-3">Commandes Impayées</th>
+        <th scope="col-3">Commandes en cours de livraison</th>
+        <th scope="col-3">Capital Réel</th>
+        <th scope="col-3">Capital Général</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% if(locals.fichCompta){ %>
+        <tr>
+          <td><%=fichCompta.commandeImpaye %></td>
+          <td><%=fichCompta.commandeEnLivraison %></td>
+          <td><%=fichCompta.capitalReel %></td>
+          <td><%=fichCompta.capitalGeneral %></td>
+        </tr>
+    <% } %>  
+
+
+    </tbody>
+  </table>   
+</div>
+
+
+
+<%- include("partials/footer.ejs") %>
