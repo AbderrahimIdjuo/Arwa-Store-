@@ -1,39 +1,51 @@
 import express from "express";
 import bodyParser from "body-parser";
 import city from "list-of-moroccan-cities"
+import pg from "pg"
 
 
 
 const app = express();
 const port = 3000;
 const citiesOfMorocco = city
+const db=new pg.Client({
+user :"postgres",
+host:"localhost",
+database:"arwastore",
+password:"ARWA@2024",
+port:5432
+});
+db.connect();
+
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
-const clientsList=[
-  {fname : "Abderrahim",lname :"Oujdi", phone :"0651565748", 
-    city :"Agadir",adress :"Hay Essaada rue 1613 N°1, Dcheira",platforme :"Tiktok"},
-  {fname : "Fayza",lname :"Bouderqua", phone :"0762830326", 
-    city :"Taroudant",adress :"Sidi Belkass rue 2 N°15",platforme :"Facebook Ads"},
-  {fname : "Arwa",lname :"Oujdi", phone :"0651565748", 
-    city :"Agadir",adress :"Hay Essaada rue 1613 N°1, Dcheira",platforme :"Tiktok"},
-  {fname : "Saad",lname :"Tsouli", phone :"0651565748", 
-    city :"Tanger",adress :"Sidi Belkass rue 2 N°15",platforme :"Instagram"}
-  ]
-
-const commandesList=[
-  { client : "Abderrahim Oujdi",montant :"500", avance :"150",livraison :"40", rest :"390" ,nbrArticls :"3",trakingNbr :"QB185486711MA",
-  discription :"deux pantalons et une chausseure",date : "2024-05-06"
-  },
-  { client : "Driss Oujdi",montant :"1000", avance :"320",livraison :"0", rest :"680",nbrArticls :"5",trakingNbr :"QB185486711MA",
-  discription :"une chemise et un pantalon",date : "2024-05-10"
+async function getClientsList(){
+  const clients =[];
+  const result =await db.query("SELECT * FROM clients");
+  result.rows.forEach(client => clients.push(client));
+  return clients; 
 }
-] 
+
+async function getOrdersList(){
+  const orders =[];
+  const result =await db.query("SELECT name as client , nbr_articl , montant , avance , livraison , rest , discription , traking_nbr , date FROM clients JOIN orders on clients.id = client_id");
+  result.rows.forEach(order => orders.push(order));                      
+  return orders; 
+}
+
+async function getCompta(){
+  const compta =[];
+  const result =await db.query("SELECT barid_bank , cih_bank , chaabi_bank , cash ,cash_beyou ,fournisseur ,commande_impaye ,commande_livraison ,capital_reel ,capital_general ,date FROM compta ORDER BY id DESC LIMIT 5");
+  result.rows.forEach(row => compta.push(row));                      
+  return compta; 
+}
 
 const ficheCompta=[]
-
+let is_invalid =""
+let message = ""
 
 // Get Routes
 app.get("/", (req, res) => {
@@ -44,22 +56,30 @@ app.get("/clients", (req, res) => {
 });
 
 app.get("/ajouterClients", (req, res) => {
-  res.render("ajouter-client.ejs",{city : citiesOfMorocco});
+  res.render("ajouter-client.ejs",{city : citiesOfMorocco , message:message ,is_invalid:is_invalid });
 });
-app.get("/listeClients", (req, res) => {
-  res.render("liste-clients.ejs",{clients : clientsList});
+app.get("/listeClients", async(req, res) => {
+let is_invalid = ""
+const clients = await getClientsList();
+console.log(clients)
+  res.render("liste-clients.ejs",{clients : clients, is_invalid  : is_invalid });
 });
-app.get("/ajouterCommande", (req, res) => {
-  res.render("ajouter-commande.ejs",{clients : clientsList});
+app.get("/ajouterCommande", async (req, res) => {
+  const clients = await getClientsList();
+  res.render("ajouter-commande.ejs",{clients : clients});
 });
-app.get("/listeCommandes", (req, res) => {
-  res.render("liste-commandes.ejs",{commandes : commandesList});
+app.get("/listeCommandes", async (req, res) => {
+  const orders = await getOrdersList();
+    res.render("liste-commandes.ejs",{commandes : orders}); 
+  
 });
 app.get("/reglerCompta", (req, res) => {
   res.render("comptabilite.ejs");
 });
-app.get("/fiche-compta", (req, res) => {
-  res.render("fiche-compta.ejs");
+app.get("/fiche-compta", async (req, res) => {
+  const ficheCompta = await getCompta()
+console.log(ficheCompta)
+res.render("fiche-compta.ejs",{fichCompta : ficheCompta})
 });
 
 
@@ -67,60 +87,88 @@ app.get("/fiche-compta", (req, res) => {
 
 
 //Post Routes
-app.post("/ajouterClients", (req, res) => {
-  let client = {
-    fname : req.body["fName"],
-    lname :req.body["lName"], 
-    phone :req.body["phone"], 
-    city :req.body["city"],
-    adress :req.body["adress"],
-    platforme :req.body["platforme"] 
+app.post("/ajouterClients", async (req, res) => {
+  const name = req.body["name"]
+  const phone = req.body["phone"] 
+  const city =req.body["city"]
+  const adress =req.body["adress"]
+  const platforme =req.body["platforme"] 
+  try{
+
+    await db.query("INSERT INTO clients(name , phone , city , adress , platforme) VALUES ($1,$2,$3,$4,$5)",
+      [name,phone,city,adress,platforme]
+    );
+    res.redirect("/ajouterClients");
+  }catch(err){
+    console.log(err)
+   /* if(phone.length === 10){
+      message = "this phone number already existe"
+      is_invalid="is-invalid"
+      
+    }else{
+      message = "Complete the phone number "
+      is_invalid="is-invalid"
+    }
+    res.render("ajouter-client.ejs",{city : citiesOfMorocco , message:message , is_invalid:is_invalid});*/
   }
-  clientsList.push(client)
-  res.redirect("/ajouterClients");
+  
+  
 });
 
-app.post("/ajouterCommande", (req, res) => {
-  let commande = {
-    client : req.body["client"],
-    montant :req.body["montant"], 
-    avance :req.body["avance"],
-    livraison :req.body["Frais de livraison"], 
-    rest :parseInt(req.body["montant"], 10)-parseInt(req.body["avance"],10)+parseInt(req.body["Frais de livraison"],10),
-    nbrArticls :req.body["numberArticls"],
-    trakingNbr :req.body["tracking number"],
-    date : getCurrentDate(),
-    discription :req.body["discription"]
+app.post("/ajouterCommande", async(req, res) => {
+  const client = req.body["client"];
+  const montant  = req.body["montant"]; 
+  const avance  = req.body["avance"];
+  const livraison  = req.body["Frais de livraison"]; 
+  const rest  = parseInt(req.body["montant"], 10)-parseInt(req.body["avance"],10)+parseInt(req.body["Frais de livraison"],10);
+  const nbrArticls =req.body["numberArticls"];
+  const trakingNbr =req.body["tracking number"];
+  const date = new Date();
+  const discription =req.body["discription"];
+  
+  try{
+    await db.query("INSERT INTO orders(nbr_articl , montant , avance , livraison , rest , discription ,traking_nbr , date , client_id) VALUES ($1 , $2 , $3 , $4 ,$5 , $6 , $7 , $8 ,$9)",
+      [nbrArticls , montant , avance , livraison , rest , discription , trakingNbr , date , client])
+    res.redirect("/ajouterCommande")
+  }catch(err){
+    console.log(err)
   }
-  commandesList.push(commande)
-  res.redirect("/ajouterCommande")
+  
 });
 
-app.post("/reglerCompta", (req, res) => {
-  let compta = {
-    baridBank : req.body["Barid Bank"],
-    cihBank :req.body["CIH Bank"], 
-    chaabiBank :req.body["Chaabi Bank"],
-    cash :req.body["Cash"], 
-    cashBeyou :req.body["Cash BEYOU"],
-    fournisseur :req.body["Fournisseur"],
-    commandeImpaye :req.body["Commandes impayées"],
-    commandeEnLivraison :req.body["Commandes en cours de livraison"],
-    capitalReel :parseInt(req.body["Barid Bank"], 10)+parseInt(req.body["CIH Bank"], 10)+parseInt(req.body["Chaabi Bank"], 10)+parseInt(req.body["Cash"], 10)+parseInt(req.body["Cash BEYOU"], 10)+parseInt(req.body["Fournisseur"], 10),
-    capitalGeneral:parseInt(req.body["Barid Bank"], 10)+parseInt(req.body["CIH Bank"], 10)+parseInt(req.body["Chaabi Bank"], 10)+parseInt(req.body["Cash"], 10)+parseInt(req.body["Cash BEYOU"], 10)+parseInt(req.body["Fournisseur"], 10)+parseInt(req.body["Commandes impayées"], 10)+parseInt(req.body["Commandes en cours de livraison"], 10),
-    date : getCurrentDate(),
-  }
-  ficheCompta.push(compta)
-  console.log(ficheCompta)
-  res.render("fiche-compta.ejs",{fichCompta : compta})
+app.post("/reglerCompta",async  (req, res) => {
+  const baridBank = parseInt(req.body["Barid Bank"],10);
+  const cihBank = parseInt(req.body["CIH Bank"],10); 
+  const chaabiBank = parseInt(req.body["Chaabi Bank"]);
+  const cash = parseInt(req.body["Cash"]); 
+  const cashBeyou = parseInt(req.body["Cash BEYOU"]);
+  const fournisseur = parseInt(req.body["Fournisseur"]);
+  const commandeImpaye = parseInt(req.body["Commandes impayées"]);
+  const commandeEnLivraison = parseInt(req.body["Commandes en cours de livraison"]);
+  const capitalReel = baridBank + cihBank + chaabiBank + cash + cashBeyou + fournisseur;
+  const capitalGeneral= capitalReel + commandeImpaye + commandeEnLivraison ;
+  const date =  getCurrentDate();
+  
+try{
+await db.query("INSERT INTO compta (barid_bank , cih_bank , chaabi_bank , cash ,cash_beyou ,fournisseur ,commande_impaye ,commande_livraison ,capital_reel ,capital_general ,date) VALUES ($1 ,$2 ,$3 ,$4 ,$5 ,$6 ,$7 ,$8 ,$9 ,$10 ,$11)",
+  [baridBank , cihBank , chaabiBank , cash , cashBeyou , fournisseur , commandeImpaye , commandeEnLivraison , capitalReel , capitalGeneral , date]
+)
+const ficheCompta = await getCompta()
+console.log(ficheCompta)
+res.render("fiche-compta.ejs",{fichCompta : ficheCompta})
+}catch(err){
+console.log(err)
+}
 });
 
-app.post("/listeClients", (req, res) => {
+app.post("/listeClients", async (req, res) => {
+  let is_invalid =""
   let search = req.body["search"].toUpperCase()
   let clientFound = false
+  const clientsList = await getClientsList()
   let searchedClient = [];
   clientsList.forEach(client =>{
-    if(client.fname.toUpperCase().indexOf(search)>-1 || client.lname.toUpperCase().indexOf(search)>-1){
+    if(client.name.toUpperCase().indexOf(search)>-1){
       searchedClient.push(client)
       clientFound = true
     }
@@ -129,12 +177,13 @@ app.post("/listeClients", (req, res) => {
     console.log(searchedClient)
   }else{
     console.log("client not found")
+    is_invalid = "is-invalid"
   }
-  res.render("liste-clients.ejs",{clients : searchedClient}); 
+  res.render("liste-clients.ejs",{clients : searchedClient, is_invalid : is_invalid }); 
   
   })
 
-  app.post("/listeCommandes", (req, res) => {
+  app.post("/listeCommandes", async (req, res) => {
     let search = req.body["search"].toUpperCase()
     let commandFound = false
     let searchedCommande = [];
@@ -149,11 +198,12 @@ app.post("/listeClients", (req, res) => {
     }else{
       console.log("commande not found")
     }
-    res.render("liste-commandes.ejs",{commandes : searchedCommande});    
+    const orders = await getOrdersList();
+    res.render("liste-commandes.ejs",{commandes : orders});    
     })
 
 app.listen(port, () => {
-  console.log(`Server running on port: ${port}`);
+  console.log(`Server running on port: http://localhost:${port}`);
 });
 
 

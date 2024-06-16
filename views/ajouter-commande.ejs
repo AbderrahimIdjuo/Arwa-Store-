@@ -4,10 +4,10 @@
   <% if (locals.clients) { %>
     <div class="col-md-3">
       <label for="validationDefault04" class="form-label">Client</label>
-      <select class="form-select" id="validationDefault04" name="client" required>
-        <option selected disabled value="">Choose...</option>
+      <select class="form-select" id="validationDefault04" name="client"  required>
+        <option selected disabled value="" >Choose...</option>
         <% clients.forEach(element => { %>
-          <option> <%=element.fname+" "+element.lname%></option>
+          <option value="<%=element.id%>"> <%=element.name%></option>
           <% }); %>
       </select>
     </div>

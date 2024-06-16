@@ -1,6 +1,31 @@
 <%- include("partials/header.ejs") %>
 
-<div class="container py-5">
+
+<div class="container py-5 ">
+<div class="card">
+  <div class="card-header">
+    Date : 2024-06-15
+  </div>
+  <div class="card-body">
+    <div class="container row py-5 ">
+    <div class="col-3 mx-2 cel">
+      <span> 120 DH </span>
+    </div>
+    <div class="col-3 mx-2  cel">
+      <span> 500 DH </span>
+    </div>
+    <div class="col-3 mx-2  cel">
+      <span> 750 DH </span>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+
+<div class="container py-5 ">
+  <% if(locals.fichCompta){ %>
+    <% for (let i=0; i<fichCompta.length ; i++){%>
 <table class="table table-hover table-bordered">
     <thead class="table-dark">
       <tr>
@@ -14,22 +39,23 @@
       </tr>
     </thead>
     <tbody>
-    <% if(locals.fichCompta){ %>
+    
         <tr>
-          <th scope="row"><%=fichCompta.date %></th>
-          <td><%=fichCompta.baridBank %></td>
-          <td><%=fichCompta.cihBank %></td>
-          <td><%=fichCompta.chaabiBank %></td>
-          <td><%=fichCompta.cash %></td>
-          <td><%=fichCompta.cashBeyou %></td>
-          <td><%=fichCompta.fournisseur %></td>
+          
+          <th scope="row"><%=fichCompta[i].date %></th>
+          <td><%=fichCompta[i].barid_bank %> DH</td>
+          <td><%=fichCompta[i].cih_bank %> DH</td>
+          <td><%=fichCompta[i].chaabi_bank %> DH</td>
+          <td><%=fichCompta[i].cash %> DH</td>
+          <td><%=fichCompta[i].cash_beyou %> DH</td>
+          <td><%=fichCompta[i].fournisseur %> DH</td>
         </tr>
-    <% } %>  
+ 
     </tbody>
-
   </table> 
+
   <table class="table table-hover table-bordered">
-    <thead class="table-dark">
+    <thead class="table">
       <tr>
         <th scope="col-3">Commandes Impayées</th>
         <th scope="col-3">Commandes en cours de livraison</th>
@@ -38,18 +64,17 @@
       </tr>
     </thead>
     <tbody>
-    <% if(locals.fichCompta){ %>
+    
         <tr>
-          <td><%=fichCompta.commandeImpaye %></td>
-          <td><%=fichCompta.commandeEnLivraison %></td>
-          <td><%=fichCompta.capitalReel %></td>
-          <td><%=fichCompta.capitalGeneral %></td>
+          <td><%=fichCompta[i].commande_impaye %> DH</td>
+          <td><%=fichCompta[i].commande_livraison %> DH</td>
+          <td><%=fichCompta[i].capital_reel %> DH</td>
+          <td><%=fichCompta[i].capital_general %> DH</td>
         </tr>
-    <% } %>  
-
-
     </tbody>
-  </table>   
+  </table> 
+  <% } %>   
+  <% } %>   
 </div>
 
 

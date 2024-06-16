@@ -1,18 +1,19 @@
 <%- include("partials/header.ejs") %>
 <div class="container py-5" >
-<form class="row g-3" action="/ajouterClients" method="POST">
-  <div class="col-md-4">
-    <label for="first-name" class="form-label">First name</label>
-    <input type="text" class="form-control" id="first-name" name="fName" required>
+<form class="row g-3" action="/ajouterClients" method="POST" novalidate>
+  <div class="col-md-6">
+    <label for="first-name" class="form-label">Name</label>
+    <input type="text" class="form-control" id="name" name="name" required>
   </div>
-  <div class="col-md-4">
-    <label for="last-name" class="form-label">Last name</label>
-    <input type="text" class="form-control" id="last-name" name="lName" required>
-  </div>
-  <div class="col-md-4">
+
+  <div class="col-md-6">
     <label for="phone" class="form-label">Phone</label>
-    <div class="input-group">
-      <input type="text" class="form-control" id="phone" name="phone" required>
+    <div class="input-group has-validation">
+      <input type="text" class="form-control <%= is_invalid %>" id="phone" name="phone" id="phone" required>
+      
+      <div class="invalid-feedback">
+        Please enter a valid phone number
+      </div>
     </div>
   </div>
   <% if (locals.city) { %>
@@ -46,6 +47,21 @@
 </form>
 </div>
 
+<script>
+    const form = document.querySelector("form");
+
+form.addEventListener(
+  "submit",
+  (e) => {
+    if (!form.checkValidity()) {
+      e.preventDefault();
+    }
+    form.classList.add("was-validated");
+    console.log("submit");
+  },
+  false
+);
+</script>
 
 
 
